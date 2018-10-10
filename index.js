@@ -120,8 +120,8 @@ function onFile(filePromises, fieldname, file, filename, encoding, mimetype) {
       .on('error', reject)
       .on('finish', () => {
         if(file.truncated) {
-          const err = new Error('Reach parts limit');
-          err.code = 'Request_parts_limit';
+          const err = new Error('Reach fileSize limit');
+          err.code = 'Request_fileSize_limit';
           err.status = 413;
           reject(err);
         }
