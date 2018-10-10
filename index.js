@@ -119,6 +119,13 @@ function onFile(filePromises, fieldname, file, filename, encoding, mimetype) {
       .pipe(writeStream)
       .on('error', reject)
       .on('finish', () => {
+        if(file.truncated) {
+          const err = new Error('Reach parts limit');
+          err.code = 'Request_parts_limit';
+          err.status = 413;
+          reject(err);
+        }
+
         const readStream = fs.createReadStream(saveTo);
         readStream.fieldname = fieldname;
         readStream.filename = filename;
