@@ -65,6 +65,7 @@ module.exports = function (request, options) {
         resolve({ fields });
       } else {
         Promise.all(filePromises)
+          .then((files) => files.filter(x => x))
           .then((files) => {
             cleanup();
             resolve({fields, files});
@@ -119,6 +120,12 @@ function onFile(filePromises, fieldname, file, filename, encoding, mimetype) {
       .pipe(writeStream)
       .on('error', reject)
       .on('finish', () => {
+        // Ignore if stream is empty.
+        if(!writeStream.bytesWritten) {
+          resolve();
+        }
+
+        // Throw error if file is too large.
         if(file.truncated) {
           const err = new Error('Reach fileSize limit');
           err.code = 'Request_fileSize_limit';
