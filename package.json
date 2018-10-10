@@ -1,6 +1,6 @@
 {
   "name": "@ta-kiyama/async-busboy",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Promise based multipart form parser",
   "main": "index.js",
   "repository": {
